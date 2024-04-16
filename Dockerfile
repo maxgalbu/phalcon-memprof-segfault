@@ -10,7 +10,11 @@ RUN apt update && apt install libjudy-dev gdb -y \
     && pecl install memprof \
     && docker-php-ext-enable memprof
 
-RUN apt update && apt install gdb
+RUN apt update && apt install -y gdb wget
+
+# COMPOSER
+RUN wget https://getcomposer.org/installer ; php installer ; mv composer.phar /usr/local/bin/composer
+
 
 WORKDIR /var/www/test
-CMD /bin/bash -c "php -f index.php; tail -f /dev/null"
+CMD /bin/bash -c "composer install && php -f index.php; tail -f /dev/null"
